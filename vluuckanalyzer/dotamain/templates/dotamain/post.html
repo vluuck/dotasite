@@ -1,0 +1,12 @@
+{% extends 'dotamain/base.html' %}
+
+{% block content %}
+<div class="post-block">
+<h1>{{post.title}}</h1>
+
+{% if post.photo %}
+<p><img class="img-article" src="{{post.photo.url}}" alt=""></p>
+{% endif %}
+{{post.content|linebreaks}}
+</div>
+{% endblock %}

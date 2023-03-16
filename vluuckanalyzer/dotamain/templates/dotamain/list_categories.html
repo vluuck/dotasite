@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- катс передаються з користувальницького тегу -->
+    {% for category in cats %} 
+        {% if category.pk == cat_selected %}
+            <li class="selected">
+                <span class="sidebar-text">{{category.name}}</span>
+            </li>
+        {% else %}
+            <li class="not-selected">
+                <a href="{{ category.get_absolute_url }}">
+                    <span class="sidebar-text">{{category.name}}</span>
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

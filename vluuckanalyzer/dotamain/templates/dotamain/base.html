@@ -1,0 +1,104 @@
+{% load static %}
+{% load dotamain_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="shortcut icon" href="{% static 'dotamain/images/sitelogo.png' %}" type="image/x-icon"/>
+    <link type="text/css" href="{% static 'dotamain/css/styles.css' %}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    {% block mainmenu %}
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'home' %}"></a>
+            </div>
+            <nav>
+                <ul class="links">
+                    {% for m in menu %}
+                    <li class="menu-item">
+                        <a href="{% url m.url_name %}">
+                            {{m.title}}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="user-ui">
+                    {% if request.user.is_authenticated %}
+                    <div class="user-ui__username">{{user.username}}</div>
+                    <div class="divider">|</div>
+                    <a href="{% url 'logout' %}">Вийти</a>
+                    {% else %}    
+                    <a href="{% url 'register' %}">Регістрація</a>
+                    <a href="{% url 'login' %}">Увійти</a>
+                    </li> 
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+    {% endblock mainmenu %}
+    <!--сайдбар блок з категоріями -->
+    <div class="main-content">
+        <div class="container">
+            <div class="sidebar">
+                <ul class="sidebar-list">
+                    {% if cat_selected == 0 %}
+                        <li class="selected"><span class="sidebar-text">Всі категорії</span></li>
+                    {% else %}
+                        <li class="not-selected"><a href="{% url 'home' %}"><span class="sidebar-text">Всі категорії</span></a></li>
+                    {% endif %}
+                    {% show_categories cat_selected %}
+                    
+                </ul>
+            </div>
+            <!-- контент сторінки -->
+            <div class="content-block">
+                {% block content %}
+                {% endblock %}
+                <!-- пагінатор -->
+                {% if page_obj.has_other_pages %}
+                    <nav class="paginator-nav">
+                        <ul class="pages-list">
+                            {% if page_obj.has_previous %}
+                                <li class="page-num">
+                                    <a href="?page={{ page_obj.previous_page_number }}"><span class="page-num-text">&lt;</span></a>
+                                </li>
+                            {% endif %}
+    
+                            {% for p in paginator.page_range %}
+                                {% if page_obj.number == p %}
+                                    <li class="page-num page-num-selected">{{ p }}</li>
+                                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                                    <li class="page-num">
+                                        <a href="?page={{ p }}"><span class="page-num-text">{{ p }}</span></a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+    
+                            {% if page_obj.has_next %}
+                                <li class="page-num">
+                                    <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+        
+    
+        
+       
+    </div>
+</body>
+</html>

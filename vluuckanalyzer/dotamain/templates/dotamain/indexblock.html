@@ -1,0 +1,25 @@
+{% extends 'dotamain/base.html' %}
+
+{% block content %}
+<div class="index-block">
+    <h1>{{title}}</h1>
+    <ul>
+        {% for post in posts %}
+        <li class="match-info">
+            <div class="article-panel">
+                <p class="first">Категорія: {{post.cat}}</p>
+                <p class="last">Дата: {{post.time_update|date:"d-m-Y H:i:s"}}</p>
+            </div>
+            <h2>{{post.title}}</h2>
+            <p>{{post.content}}</p>
+            <p class="link-read-post">
+                <a href="{{ post.get_absolute_url }}">
+                    <span class="link-read-post-text">Відкрити матч</span> 
+                </a>
+            </p>
+            <hr>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

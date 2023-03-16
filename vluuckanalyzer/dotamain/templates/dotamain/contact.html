@@ -1,0 +1,12 @@
+{% extends 'dotamain/base.html' %}
+
+{% block content %}
+<div class="contact-block">
+    <h1>{{title}}</h1>
+    <form action="{% url 'contact' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Надіслати</button>
+    </form>
+</div>
+{% endblock %}
